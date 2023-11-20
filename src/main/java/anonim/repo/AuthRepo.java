@@ -3,7 +3,6 @@ package anonim.repo;
 import anonim.base.BaseRepo;
 import anonim.entity.auth.AuthUser;
 import anonim.enums.Role;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Modifying;
@@ -18,6 +17,7 @@ import java.util.UUID;
 public interface AuthRepo
     extends JpaRepository<AuthUser, UUID>, JpaSpecificationExecutor<AuthUser>, BaseRepo {
     long countByCreatedAtGreaterThanEqual(LocalDateTime createdAt);
+
     @Transactional
     @Modifying
     void deleteByChatId(Long chatId);
