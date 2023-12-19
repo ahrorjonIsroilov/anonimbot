@@ -10,6 +10,7 @@ import anonim.command.inline.Answer;
 import anonim.command.inline.Cancel;
 import anonim.command.inline.ChooseLanguage;
 import anonim.command.inline.Close;
+import anonim.entity.session.SessionUserRepository;
 import anonim.processor.*;
 
 import java.util.ArrayList;
@@ -24,32 +25,32 @@ public abstract class BaseHandler {
 
     protected final List<TextCommand> textCommands;
 
-    public BaseHandler(BotService service) {
+    public BaseHandler(BotService service, SessionUserRepository repository) {
         // add callback commands
         callbackCommands = new ArrayList<>();
-        callbackCommands.add(new ChooseLanguage(service));
-        callbackCommands.add(new Answer(service));
-        callbackCommands.add(new Close(service));
-        callbackCommands.add(new Cancel(service));
+        callbackCommands.add(new ChooseLanguage(service,repository));
+        callbackCommands.add(new Answer(service,repository));
+        callbackCommands.add(new Close(service,repository));
+        callbackCommands.add(new Cancel(service,repository));
         // add text commands
         textCommands = new ArrayList<>();
-        textCommands.add(new Start(service));
-        textCommands.add(new FindId(service));
-        textCommands.add(new SetId(service));
-        textCommands.add(new LangCommand(service));
-        textCommands.add(new SendAds(service));
-        textCommands.add(new Help(service));
-        textCommands.add(new Statistics(service));
-        textCommands.add(new GiveId(service));
-        textCommands.add(new Default(service));
+        textCommands.add(new Start(service,repository));
+        textCommands.add(new FindId(service,repository));
+        textCommands.add(new SetId(service,repository));
+        textCommands.add(new LangCommand(service,repository));
+        textCommands.add(new SendAds(service,repository));
+        textCommands.add(new Help(service,repository));
+        textCommands.add(new Statistics(service,repository));
+        textCommands.add(new GiveId(service,repository));
+        textCommands.add(new Default(service,repository));
         // add text commands
         processors = new HashMap<>();
-        processors.put("document", new ProcessDocument(service));
-        processors.put("photo", new ProcessPhoto(service));
-        processors.put("video", new ProcessVideo(service));
-        processors.put("videoNote", new ProcessVideoNote(service));
-        processors.put("audio", new ProcessAudio(service));
-        processors.put("sticker", new ProcessSticker(service));
-        processors.put("voice", new ProcessVoice(service));
+        processors.put("document", new ProcessDocument(service,repository));
+        processors.put("photo", new ProcessPhoto(service,repository));
+        processors.put("video", new ProcessVideo(service,repository));
+        processors.put("videoNote", new ProcessVideoNote(service,repository));
+        processors.put("audio", new ProcessAudio(service,repository));
+        processors.put("sticker", new ProcessSticker(service,repository));
+        processors.put("voice", new ProcessVoice(service,repository));
     }
 }

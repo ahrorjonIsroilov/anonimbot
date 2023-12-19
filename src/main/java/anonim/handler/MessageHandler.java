@@ -5,6 +5,7 @@ import anonim.base.command.TextCommand;
 import anonim.base.handler.BaseHandler;
 import anonim.base.handler.Handler;
 import anonim.command.Default;
+import anonim.entity.session.SessionUserRepository;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -13,8 +14,8 @@ import java.util.Optional;
 
 @Component
 public class MessageHandler extends BaseHandler implements Handler {
-    public MessageHandler(BotService service) {
-        super(service);
+    public MessageHandler(BotService service, SessionUserRepository repository) {
+        super(service,repository);
     }
 
     @Override

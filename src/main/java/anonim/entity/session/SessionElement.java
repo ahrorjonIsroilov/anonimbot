@@ -1,4 +1,4 @@
-package anonim.entity.auth;
+package anonim.entity.session;
 
 public enum SessionElement {
     USER_ID,

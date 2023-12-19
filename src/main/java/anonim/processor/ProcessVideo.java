@@ -5,7 +5,8 @@ import anonim.base.command.Processor;
 import anonim.button.InlineButton;
 import anonim.entity.Message;
 import anonim.entity.auth.AuthUser;
-import anonim.entity.auth.SessionElement;
+import anonim.entity.session.SessionElement;
+import anonim.entity.session.SessionUserRepository;
 import anonim.enums.Formatting;
 import anonim.enums.Role;
 import anonim.util.Words;
@@ -27,8 +28,8 @@ import static anonim.enums.State.DEFAULT;
  */
 @Component
 public class ProcessVideo extends Processor {
-    public ProcessVideo(BotService service) {
-        super(service);
+    public ProcessVideo(BotService service, SessionUserRepository repository) {
+        super(service,repository);
     }
 
     @Override

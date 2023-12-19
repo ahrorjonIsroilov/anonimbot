@@ -5,12 +5,12 @@ import anonim.base.command.Processor;
 import anonim.button.InlineButton;
 import anonim.entity.Message;
 import anonim.entity.auth.AuthUser;
-import anonim.entity.auth.SessionElement;
+import anonim.entity.session.SessionElement;
+import anonim.entity.session.SessionUserRepository;
 import anonim.enums.Formatting;
 import anonim.util.Words;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.Update;
-import org.telegram.telegrambots.meta.api.objects.Video;
 import org.telegram.telegrambots.meta.api.objects.Voice;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardRemove;
 
@@ -20,8 +20,8 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardRem
  */
 @Component
 public class ProcessVoice extends Processor {
-    public ProcessVoice(BotService service) {
-        super(service);
+    public ProcessVoice(BotService service, SessionUserRepository repository) {
+        super(service,repository);
     }
 
     @Override

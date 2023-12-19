@@ -2,8 +2,9 @@ package anonim.base.command;
 
 import anonim.base.BotService;
 import anonim.entity.auth.AuthUser;
-import anonim.entity.auth.Session;
-import anonim.entity.auth.SessionElement;
+import anonim.entity.session.Session;
+import anonim.entity.session.SessionElement;
+import anonim.entity.session.SessionUserRepository;
 import anonim.enums.Formatting;
 import anonim.enums.Language;
 import anonim.enums.Role;
@@ -36,9 +37,9 @@ public abstract class Command {
     protected Language lang = Language.EN;
     protected ExecutorService thread;
 
-    protected Command(BotService service) {
+    protected Command(BotService service, SessionUserRepository repository) {
         this.service = service;
-        this.session = Session.build();
+        this.session = Session.build(repository);
         thread = Executors.newFixedThreadPool(4);
     }
 
@@ -50,7 +51,7 @@ public abstract class Command {
         } else {
             AuthUser user = service.getUser(chatId);
             if (Objects.nonNull(user) && user.isJoined()) {
-                session.set(chatId, session.prepare(user));
+                session.set(session.prepare(user));
                 lang = session.get(chatId).getLanguage();
                 session.setElement(SessionElement.QUESTION_ID, 0, chatId);
                 return true;
@@ -66,7 +67,7 @@ public abstract class Command {
                     .chatId(chatId)
                     .build();
                 service.saveUser(authUser);
-                session.set(chatId, session.prepare(authUser));
+                session.set(session.prepare(authUser));
                 session.setElement(SessionElement.QUESTION_ID, 0, chatId);
             }
         }

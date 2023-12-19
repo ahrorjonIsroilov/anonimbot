@@ -4,6 +4,7 @@ package anonim.command;
 import anonim.base.BotService;
 import anonim.base.command.TextCommand;
 import anonim.config.BotConfig;
+import anonim.entity.session.SessionUserRepository;
 import anonim.enums.Formatting;
 import anonim.enums.Role;
 import anonim.enums.State;
@@ -14,8 +15,8 @@ import java.util.Objects;
 
 @Component
 public class SendAds extends TextCommand {
-    public SendAds(BotService service) {
-        super(service);
+    public SendAds(BotService service, SessionUserRepository repository) {
+        super(service,repository);
     }
 
     @Override

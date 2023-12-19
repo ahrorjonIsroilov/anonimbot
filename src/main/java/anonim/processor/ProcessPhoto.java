@@ -5,7 +5,8 @@ import anonim.base.command.Processor;
 import anonim.button.InlineButton;
 import anonim.entity.Message;
 import anonim.entity.auth.AuthUser;
-import anonim.entity.auth.SessionElement;
+import anonim.entity.session.SessionElement;
+import anonim.entity.session.SessionUserRepository;
 import anonim.enums.Formatting;
 import anonim.enums.Role;
 import anonim.enums.State;
@@ -26,8 +27,8 @@ import java.util.List;
  */
 @Component
 public class ProcessPhoto extends Processor {
-    public ProcessPhoto(BotService service) {
-        super(service);
+    public ProcessPhoto(BotService service, SessionUserRepository repository) {
+        super(service,repository);
     }
 
     @Override

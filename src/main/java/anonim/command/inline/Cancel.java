@@ -2,14 +2,15 @@ package anonim.command.inline;
 
 import anonim.base.BotService;
 import anonim.base.command.CallbackCommand;
-import anonim.entity.auth.SessionElement;
+import anonim.entity.session.SessionElement;
+import anonim.entity.session.SessionUserRepository;
 import anonim.enums.State;
 import anonim.util.Words;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 public class Cancel extends CallbackCommand {
-    public Cancel(BotService service) {
-        super(service);
+    public Cancel(BotService service, SessionUserRepository repository) {
+        super(service,repository);
     }
 
     @Override

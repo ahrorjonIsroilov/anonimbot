@@ -5,7 +5,8 @@ import anonim.base.command.Processor;
 import anonim.button.InlineButton;
 import anonim.entity.Message;
 import anonim.entity.auth.AuthUser;
-import anonim.entity.auth.SessionElement;
+import anonim.entity.session.SessionElement;
+import anonim.entity.session.SessionUserRepository;
 import anonim.enums.Formatting;
 import anonim.util.Words;
 import org.springframework.stereotype.Component;
@@ -19,8 +20,8 @@ import org.telegram.telegrambots.meta.api.objects.stickers.Sticker;
  */
 @Component
 public class ProcessSticker extends Processor {
-    public ProcessSticker(BotService service) {
-        super(service);
+    public ProcessSticker(BotService service, SessionUserRepository repository) {
+        super(service,repository);
     }
 
     @Override

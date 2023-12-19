@@ -11,17 +11,13 @@ public class Bot extends TelegramLongPollingBot {
     private final UpdateHandler handler;
 
     public Bot(UpdateHandler handler) {
+        super(BotConfig.TEST_TOKEN);
         this.handler = handler;
     }
 
     @Override
     public String getBotUsername() {
-        return BotConfig.BOT_USERNAME;
-    }
-
-    @Override
-    public String getBotToken() {
-        return BotConfig.BOT_TOKEN;
+        return BotConfig.TEST_USERNAME;
     }
 
     @Override

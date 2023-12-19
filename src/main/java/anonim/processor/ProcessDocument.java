@@ -6,7 +6,8 @@ import anonim.base.command.Processor;
 import anonim.button.InlineButton;
 import anonim.entity.Message;
 import anonim.entity.auth.AuthUser;
-import anonim.entity.auth.SessionElement;
+import anonim.entity.session.SessionElement;
+import anonim.entity.session.SessionUserRepository;
 import anonim.enums.Formatting;
 import anonim.util.Words;
 import org.springframework.stereotype.Component;
@@ -20,8 +21,8 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardRem
  */
 @Component
 public class ProcessDocument extends Processor {
-    public ProcessDocument(BotService service) {
-        super(service);
+    public ProcessDocument(BotService service, SessionUserRepository repository) {
+        super(service,repository);
     }
 
     @Override

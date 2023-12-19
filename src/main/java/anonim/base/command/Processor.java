@@ -1,12 +1,13 @@
 package anonim.base.command;
 
 import anonim.base.BotService;
+import anonim.entity.session.SessionUserRepository;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 public abstract class Processor extends Command {
 
-    protected Processor(BotService service) {
-        super(service);
+    protected Processor(BotService service, SessionUserRepository repository) {
+        super(service,repository);
     }
 
     public void handleUpdate(Update update) {
