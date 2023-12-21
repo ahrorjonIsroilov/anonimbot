@@ -4,6 +4,7 @@ package anonim.command;
 import anonim.base.BotService;
 import anonim.base.command.TextCommand;
 import anonim.config.BotConfig;
+import anonim.entity.session.SessionUserRepository;
 import anonim.enums.Formatting;
 import anonim.enums.State;
 import anonim.util.Words;
@@ -12,8 +13,8 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 
 @Component
 public class Help extends TextCommand {
-    public Help(BotService service) {
-        super(service);
+    public Help(BotService service, SessionUserRepository repository) {
+        super(service,repository);
     }
 
     @Override

@@ -2,12 +2,13 @@ package anonim.command.inline;
 
 import anonim.base.BotService;
 import anonim.base.command.CallbackCommand;
-import anonim.entity.auth.SessionElement;
+import anonim.entity.session.SessionElement;
+import anonim.entity.session.SessionUserRepository;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 public class Close extends CallbackCommand {
-    public Close(BotService service) {
-        super(service);
+    public Close(BotService service, SessionUserRepository repository) {
+        super(service,repository);
     }
 
     @Override

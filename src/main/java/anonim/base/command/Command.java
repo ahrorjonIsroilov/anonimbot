@@ -1,9 +1,11 @@
 package anonim.base.command;
 
 import anonim.base.BotService;
+import anonim.config.BotConfig;
 import anonim.entity.auth.AuthUser;
-import anonim.entity.auth.Session;
-import anonim.entity.auth.SessionElement;
+import anonim.entity.session.Session;
+import anonim.entity.session.SessionElement;
+import anonim.entity.session.SessionUserRepository;
 import anonim.enums.Formatting;
 import anonim.enums.Language;
 import anonim.enums.Role;
@@ -34,12 +36,10 @@ public abstract class Command {
     protected final Session session;
     protected Long chatId;
     protected Language lang = Language.EN;
-    protected ExecutorService thread;
 
-    protected Command(BotService service) {
+    protected Command(BotService service, SessionUserRepository repository) {
         this.service = service;
-        this.session = Session.build();
-        thread = Executors.newFixedThreadPool(4);
+        this.session = Session.build(repository);
     }
 
     protected boolean beforeHandle(Update update) {
@@ -50,7 +50,7 @@ public abstract class Command {
         } else {
             AuthUser user = service.getUser(chatId);
             if (Objects.nonNull(user) && user.isJoined()) {
-                session.set(chatId, session.prepare(user));
+                session.set(session.prepare(user));
                 lang = session.get(chatId).getLanguage();
                 session.setElement(SessionElement.QUESTION_ID, 0, chatId);
                 return true;
@@ -66,7 +66,7 @@ public abstract class Command {
                     .chatId(chatId)
                     .build();
                 service.saveUser(authUser);
-                session.set(chatId, session.prepare(authUser));
+                session.set(session.prepare(authUser));
                 session.setElement(SessionElement.QUESTION_ID, 0, chatId);
             }
         }
@@ -461,15 +461,15 @@ public abstract class Command {
         }
     }
 
-    protected void deleteMessage(Update update) {
+    protected void deleteMessage(Integer messageId) {
         try {
-            bot.execute(new DeleteMessage(chatId.toString(), getMessage(update).getMessageId()));
+            bot.execute(new DeleteMessage(chatId.toString(), messageId));
         } catch (TelegramApiException e) {
             e.printStackTrace();
         }
     }
 
-    private Message getMessage(Update update) {
+    protected Message getMessage(Update update) {
         if (update.hasMessage()) return update.getMessage();
         else if (update.hasCallbackQuery()) return update.getCallbackQuery().getMessage();
         return new Message();
@@ -497,5 +497,17 @@ public abstract class Command {
             e.printStackTrace();
         }
         return file.getFilePath();
+    }
+
+    protected String getFileUrl(String fileId) {
+        GetFile getFile = new GetFile();
+        getFile.setFileId(fileId);
+        File file = new File();
+        try {
+            file = bot.execute(getFile);
+        } catch (TelegramApiException e) {
+            e.printStackTrace();
+        }
+        return file.getFileUrl(BotConfig.TEST_TOKEN);
     }
 }

@@ -19,6 +19,10 @@ spring:
       hibernate:
         enable_lazy_load_no_trans: true
         format_sql: true
+  rabbitmq:
+    password: ${RABBIT_MQ_PASSWORD:123}
+    username: ${RABBIT_MQ_USERNAME:ahrorjon}
+    addresses: ${RABBIT_MQ_ADDRESSES:localhost:5672}
 logging:
   file:
     name: logback

@@ -5,8 +5,10 @@ import anonim.base.command.Processor;
 import anonim.button.InlineButton;
 import anonim.entity.Message;
 import anonim.entity.auth.AuthUser;
-import anonim.entity.auth.SessionElement;
+import anonim.entity.session.SessionElement;
+import anonim.entity.session.SessionUserRepository;
 import anonim.enums.Formatting;
+import anonim.enums.MessageType;
 import anonim.util.Words;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.Audio;
@@ -19,8 +21,8 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardRem
  */
 @Component
 public class ProcessAudio extends Processor {
-    public ProcessAudio(BotService service) {
-        super(service);
+    public ProcessAudio(BotService service, SessionUserRepository repository) {
+        super(service, repository);
     }
 
     @Override
@@ -45,8 +47,10 @@ public class ProcessAudio extends Processor {
             Message message = Message.builder()
                 .owner(service.getUser(chatId))
                 .telegramMessageId(update.getMessage().getMessageId())
-                .question(service.getMessage((Integer) session.getElement(chatId, SessionElement.QUESTION_ID)) != null ?
+                .question(service.existsByMessageId(session.getElement(chatId, SessionElement.QUESTION_ID)) ?
                     service.getMessage((Integer) session.getElement(chatId, SessionElement.QUESTION_ID)) : null)
+                .messageType(MessageType.AUDIO)
+                .contentPath(getFilePath(audio.getFileId()))
                 .build();
             service.saveMessage(message);
             AuthUser usr = service.getUser(targetId);

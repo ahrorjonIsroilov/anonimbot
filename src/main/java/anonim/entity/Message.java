@@ -1,6 +1,7 @@
 package anonim.entity;
 
 import anonim.entity.auth.AuthUser;
+import anonim.enums.MessageType;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -24,6 +25,16 @@ public class Message {
 
     @Column(name = "content")
     private String content;
+
+    @Column(name = "message_type")
+    @Enumerated(EnumType.STRING)
+    private MessageType messageType;
+
+    @Column(name = "content_path")
+    private String contentPath;
+
+    @Column(name = "file_id")
+    private String fileId;
 
     @ManyToOne
     @JoinColumn(name = "owner_id")

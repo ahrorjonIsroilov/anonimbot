@@ -2,6 +2,7 @@ package anonim.base;
 
 import anonim.entity.Message;
 import anonim.entity.auth.AuthUser;
+import anonim.entity.session.SessionUserRepository;
 import anonim.enums.Role;
 import anonim.repo.AuthRepo;
 import anonim.repo.MessageRepo;
@@ -12,7 +13,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Service
-public record BotService(AuthRepo repo, MessageRepo messageRepo) {
+public record BotService(AuthRepo repo, MessageRepo messageRepo, SessionUserRepository sessionUserRepository) {
     public Boolean existUser(Long chatId) {
         return repo.existsByChatId(chatId);
     }
@@ -33,8 +34,8 @@ public record BotService(AuthRepo repo, MessageRepo messageRepo) {
         repo.save(user);
     }
 
-    public void saveMessage(Message message) {
-        messageRepo.save(message);
+    public Message saveMessage(Message message) {
+        return messageRepo.save(message);
     }
 
     public Message getMessage(Long id) {
@@ -43,6 +44,10 @@ public record BotService(AuthRepo repo, MessageRepo messageRepo) {
 
     public Message getMessage(Integer tgMessageId) {
         return messageRepo.findByTelegramMessageId(tgMessageId);
+    }
+
+    public Boolean existsByMessageId(Integer messageId) {
+        return messageRepo.existsByTelegramMessageId(messageId);
     }
 
     public List<AuthUser> getAdmins() {

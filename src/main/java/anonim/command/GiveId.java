@@ -5,6 +5,7 @@ import anonim.base.BotService;
 import anonim.base.command.TextCommand;
 import anonim.config.BotConfig;
 import anonim.entity.auth.AuthUser;
+import anonim.entity.session.SessionUserRepository;
 import anonim.enums.Formatting;
 import anonim.enums.Role;
 import anonim.util.Words;
@@ -15,8 +16,8 @@ import java.util.Objects;
 
 @Component
 public class GiveId extends TextCommand {
-    public GiveId(BotService service) {
-        super(service);
+    public GiveId(BotService service, SessionUserRepository repository) {
+        super(service,repository);
     }
 
     @Override

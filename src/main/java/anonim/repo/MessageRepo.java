@@ -7,4 +7,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface MessageRepo extends JpaRepository<Message, Long> {
     Message findByTelegramMessageId(Integer telegramMessageId);
+
+    boolean existsByTelegramMessageId(Integer telegramMessageId);
 }

@@ -6,8 +6,10 @@ import anonim.base.command.TextCommand;
 import anonim.button.InlineButton;
 import anonim.entity.Message;
 import anonim.entity.auth.AuthUser;
-import anonim.entity.auth.SessionElement;
+import anonim.entity.session.SessionElement;
+import anonim.entity.session.SessionUserRepository;
 import anonim.enums.Formatting;
+import anonim.enums.MessageType;
 import anonim.enums.Role;
 import anonim.enums.State;
 import anonim.util.Words;
@@ -21,8 +23,8 @@ import java.util.List;
 
 @Component
 public class Default extends TextCommand {
-    public Default(BotService service) {
-        super(service);
+    public Default(BotService service, SessionUserRepository repository) {
+        super(service, repository);
     }
 
     @Override
@@ -66,18 +68,19 @@ public class Default extends TextCommand {
     private void deliverMessage(Update update, Long targetId) {
         if (targetId != null) {
             String text = update.getMessage().getText();
-            Message message = Message.builder()
+            Message message = service.saveMessage(Message.builder()
                 .owner(service.getUser(chatId))
                 .telegramMessageId(update.getMessage().getMessageId())
-                .question(service.getMessage((Integer) session.getElement(chatId, SessionElement.QUESTION_ID)) != null ?
+                .question(service.existsByMessageId(session.getElement(chatId, SessionElement.QUESTION_ID)) ?
                     service.getMessage((Integer) session.getElement(chatId, SessionElement.QUESTION_ID)) : null)
+                .messageType(MessageType.TEXT)
                 .content(text)
-                .build();
-            service.saveMessage(message);
+                .build());
+
             AuthUser user = service.getUser(targetId);
             sendMessage(Words.YOU_HAVE_A_NEW_MESSAGE.get(user.getLanguage()).formatted(text),
                 user.getChatId(),
-                message.getQuestion() != null ? message.getQuestion().getTelegramMessageId() : null,
+                session.getElement(chatId, SessionElement.QUESTION_ID),
                 InlineButton.answer(user.getLanguage(), session.get(chatId).getIdentifier(), message.getTelegramMessageId()),
                 Formatting.CUSTOM);
             sendMessage(Words.MESSAGE_DELIVERED.get(lang), Formatting.CUSTOM);
