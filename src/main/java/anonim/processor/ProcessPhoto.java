@@ -48,7 +48,7 @@ public class ProcessPhoto extends Processor {
             case SEND_ADS -> {
                 if (session.getRole(chatId).equals(Role.ADMIN)) {
                     List<AuthUser> users = service.getJoinedUsers();
-                    sendAds(users, photoSize, caption, update.getMessage().getEntities(), update.getMessage().getReplyMarkup());
+                    sendAds(users, photoSize, caption, update.getMessage().getCaptionEntities(), update.getMessage().getReplyMarkup());
                     sendMessage("Sent!", Formatting.CUSTOM);
                     session.setState(State.DEFAULT, chatId);
                 }

@@ -6,6 +6,7 @@ import anonim.enums.State;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -26,7 +27,11 @@ public class Session {
     }
 
     public Boolean existAndJoined(Long chatId) {
-        return repository.existsByChatIdAndJoined(chatId, true);
+        if (exist(chatId)) {
+            SessionUser s = get(chatId);
+            return s.getJoined();
+        }
+        return false;
     }
 
     public Boolean joined(Long chatId) {
@@ -75,7 +80,7 @@ public class Session {
         repository.save(sessionUser);
     }
 
-    public void setElement(SessionElement elementType, Object data, Long chatId) {
+    public <T extends Serializable> void setElement(SessionElement elementType, T data, Long chatId) {
         SessionUser sessionUser = get(chatId);
         if (sessionUser.getElements() == null)
             sessionUser.setElements(new HashMap<>());
